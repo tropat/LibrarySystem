@@ -5,7 +5,7 @@ public class LogInForm implements Runnable {
 	private JPanel mainPanel;
 	private JButton loginButton, passwordButton;
 	
-	public static void displayLogInForm() {
+	public void displayLogInForm() {
 		Thread display = new Thread(new LogInForm());
 		display.start();
 	}
