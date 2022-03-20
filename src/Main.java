@@ -4,6 +4,7 @@ public class Main {
 	
 	public static void main(String[] args) {
 		Main mainProgram = new Main();
+		DatabaseConnector.connectToDatabase();
 		mainProgram.logInForm = new LogInForm();
 		mainProgram.logInForm.displayLogInForm();
 	}
