@@ -9,6 +9,7 @@ public class LogInForm implements Runnable {
 	private JButton signInButton, signUpButton;
 	private JTextField loginTextField;
 	private JPasswordField passwordTextField;
+	private JLabel validateLabel;
 	
 	public void displayLogInForm() {
 		Thread display = new Thread(new LogInForm());
@@ -23,17 +24,31 @@ public class LogInForm implements Runnable {
 				ResultSet rs = DatabaseConnector.execute("Select password FROM users WHERE login = '" + login + "'");
 				try {
 					if(!rs.next()) {
-						System.out.println("Wrong login");
+						validateLabel.setText("Wrong login");
+						validateLabel.setForeground(Color.red);
+
 					} else {	
 						if(rs.getString("password").equals(password)) {
-							System.out.println("Signed in");
+							LibrarySystemForm lsf = new LibrarySystemForm();
+							frame.setVisible(false);
+							lsf.displayLibrarySystemForm();
 						} else {
-							System.out.println("Wrong password");
+							validateLabel.setText("Wrong password");
+							validateLabel.setForeground(Color.red);
 						}
 					}
 				} catch (Exception ex) {
 					System.out.println(ex);
 				}		
+			}
+		});
+	}
+	
+	public void setSignUpButton() {
+		signUpButton.addActionListener( new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				SignUpForm suf = new SignUpForm();
+				suf.displaySignUpForm();		
 			}
 		});
 	}
@@ -46,12 +61,15 @@ public class LogInForm implements Runnable {
 		signUpButton = new JButton("Sign Up");
 		
 		setSignInButton();
+		setSignUpButton();
 		
 		loginTextField = new JTextField("login");
 		passwordTextField = new JPasswordField("password");
 		
 		loginTextField.setPreferredSize(new Dimension(250,30));
 		passwordTextField.setPreferredSize(new Dimension(250,30));
+
+		validateLabel = new JLabel(" ");
 
 		signInButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 		signUpButton.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -64,6 +82,7 @@ public class LogInForm implements Runnable {
 		
 		mainPanel.add(loginTextField);
 		mainPanel.add(passwordTextField);
+		mainPanel.add(validateLabel);
 		mainPanel.add(signInButton);
 		mainPanel.add(signUpButton);
 	}
