@@ -16,8 +16,21 @@ public class LogInForm implements Runnable {
 		display.start();
 	}
 	
+	private Boolean checkIfAdmin(String login) {
+		ResultSet rs = DatabaseConnector.execute("Select * FROM admins WHERE login = '" + login + "'");
+		try {
+			if(!rs.next()) {
+				return false;
+			}
+		} catch (Exception ex) {
+			System.out.println(ex);
+		};
+		return true;
+	}
+	
 	public void setSignInButton() {
 		signInButton.addActionListener( new ActionListener() {
+			
 			public void actionPerformed(ActionEvent e) {
 				String login = loginTextField.getText();
 				String password = String.valueOf(passwordTextField.getPassword());
@@ -29,7 +42,8 @@ public class LogInForm implements Runnable {
 
 					} else {	
 						if(rs.getString("password").equals(password)) {
-							LibrarySystemForm lsf = new LibrarySystemForm();
+							
+							LibrarySystemForm lsf = new LibrarySystemForm(checkIfAdmin(login),login);
 							frame.setVisible(false);
 							lsf.displayLibrarySystemForm();
 						} else {
@@ -41,6 +55,7 @@ public class LogInForm implements Runnable {
 					System.out.println(ex);
 				}		
 			}
+			
 		});
 	}
 	

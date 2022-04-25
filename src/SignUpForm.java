@@ -54,8 +54,6 @@ public class SignUpForm implements Runnable {
 							cs.executeUpdate();
 							int id = cs.getInt(3);
 							
-							System.out.println(id);
-							
 							PreparedStatement ps = DatabaseConnector.getCon().prepareStatement("INSERT INTO users_data "
 									+ "(user_id, first_name, last_name, address, email, phone_number) values (?,?,?,?,?,?)");
 							ps.setInt(1, id);
